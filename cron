@@ -11,8 +11,8 @@
 
 # Routechoices.com
 @reboot         su -c /apps/routechoices-server/bin/start_all -s /bin/sh apps
-* * * * *       /apps/routechoices-server/env/bin/python3 /apps/routechoices-server/manage.py create_certificate --post-hook="service nginx restart"
-0 13 * * *      /apps/routechoices-server/env/bin/python3 /apps/routechoices-server/manage.py renew_certificate --post-hook="service nginx reload"
+* * * * *       su - apps -c "/apps/routechoices-server/env/bin/python3 /apps/routechoices-server/manage.py create_certificate" && service nginx restart
+0 13 * * *      su - apps -c "/apps/routechoices-server/env/bin/python3 /apps/routechoices-server/manage.py renew_certificate" && service nginx reload
 0 0 * * *       /apps/routechoices-server/env/bin/python3 /apps/routechoices-server/manage.py purge_unused_locations --incremental --force
 5 0 * * *       /apps/routechoices-server/env/bin/python3 /apps/routechoices-server/manage.py clearsessions
 15 0 * * *      /apps/routechoices-server/env/bin/python3 /apps/routechoices-server/manage.py archive_devices --force
